@@ -91,6 +91,6 @@ chmod +x ./setup.sh
 ## Then run the command
 
 ```sh
-./start.sh
+./setup.sh
 ```
 ## Done

@@ -10,7 +10,7 @@ echo "Creating virtual environment..."
 python -m venv venv
 
 echo "Activating virtual environment..."
-source venv/bin/activate
+source venv/Scripts/activate
 
 echo "Installing Python dependencies..."
 pip install -r requirements.txt
@@ -26,6 +26,9 @@ python manage.py runserver &
 DJANGO_PID=$!
 
 cd ../../
+
+echo "=== Frontend ==="
+cd frontend/
 
 echo "=== Frontend Setup ==="
 cd frontend-sms/
