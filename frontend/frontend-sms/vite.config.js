@@ -13,9 +13,23 @@ export default defineConfig({
     vueDevTools(),
     tailwindcss()
   ],
+  
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     },
   },
+
+  server: {
+    proxy: {
+      '/dj-rest-auth': {
+        target: 'http://127.0.0.1:8000', 
+        changeOrigin: true,
+      },
+      '/api': {
+        target: 'http://127.0.0.1:8000', 
+        changeOrigin: true,
+      },
+    }
+  }
 })
