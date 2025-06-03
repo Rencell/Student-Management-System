@@ -90,7 +90,7 @@ WSGI_APPLICATION = 'sms_backend.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASE_URL = os.getenv('DATABASE_URL')
-if ENVIRONMENT == "LOCAL":
+if ENVIRONMENT == "PROD":
     DATABASES = {
         'default': dj_database_url.config(default=DATABASE_URL)
     }
