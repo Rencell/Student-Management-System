@@ -18,7 +18,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 ENVIRONMENT = "LOCAL"
 
-if ENVIRONMENT == "PROD":
+if ENVIRONMENT == "LOCAL":
     load_dotenv()
 
 # Quick-start development settings - unsuitable for production
@@ -90,9 +90,18 @@ WSGI_APPLICATION = 'sms_backend.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASE_URL = os.getenv('DATABASE_URL')
-DATABASES = {
-    'default': dj_database_url.config(default=DATABASE_URL)
+if ENVIRONMENT == "LOCAL":
+    DATABASES = {
+        'default': dj_database_url.config(default=DATABASE_URL)
+    }
+else:
+    DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
+
 
 
 # Password validation

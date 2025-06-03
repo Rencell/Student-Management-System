@@ -27,7 +27,7 @@ export default defineConfig({
         changeOrigin: true,
       },
       '/api': {
-        target: 'https://student-management-system-rmww.onrender.com/', 
+        target: 'https://student-management-system-rmww.onrender.com', 
         changeOrigin: true,
       },
     }
