@@ -22,6 +22,15 @@ const form = reactive({
     subject: null,
     percentage: null
 })
+const clearform = () => {
+    form.name = null
+    form.score = null
+    form.max_score = null
+    form.type = null
+    form.enrollment_id = null
+    form.subject = null
+    form.percentage = null
+}
 
 const emit = defineEmits(['create-grade'])
 
@@ -35,6 +44,7 @@ const submit = async() => {
         const response = await gradeService.create_grade(form);
         emit('create-grade', response.data)
         showAddStudentDialog.value = false
+        clearform()
     }catch(e){
         console.error(e)
     }
@@ -42,7 +52,7 @@ const submit = async() => {
 
 const grade_type = [
     {value:1, label:'Quiz'},
-    {value:2, label:'Assignment'},
+    {value:2, label:'Examination'},
     {value:3, label:'Activity'},
 ]
 

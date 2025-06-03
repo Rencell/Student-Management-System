@@ -3,7 +3,17 @@
 import django.db.models.deletion
 from django.db import migrations, models
 
-
+def add_gradetype_data(apps, schema_editor):
+    GradeType = apps.get_model('grade', 'GradeType')
+    
+    GradeType.objects.create(name="activity")
+    GradeType.objects.create(name="quiz")
+    GradeType.objects.create(name="examination")
+    
+def create_admin_user(apps, schema_editor):
+    User = apps.get_model('auth', 'User')
+    if not User.objects.filter(username='admin').exists():
+        User.objects.create_superuser('admin', 'admin@example.com', 'password')
 class Migration(migrations.Migration):
 
     initial = True
@@ -30,4 +40,6 @@ class Migration(migrations.Migration):
                 ('type', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='grade.gradetype')),
             ],
         ),
+        migrations.RunPython(add_gradetype_data),
+        migrations.RunPython(create_admin_user),
     ]

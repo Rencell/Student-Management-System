@@ -26,7 +26,7 @@ const route = useRoute()
 
 const grade_data = reactive({
     quiz: [],
-    assignment: [],
+    examination: [],
     activity: [],
 })
 
@@ -68,7 +68,7 @@ const createGrade = (response) => {
 
 const deleteGrade = async (data, grade_id) => {
 
-    const validTypes = ['quiz', 'assignment', 'activity'];
+    const validTypes = ['quiz', 'examination', 'activity'];
     try {
         await gradeService.delete_grade(grade_id)
         if (validTypes.includes(data))
@@ -117,7 +117,7 @@ const retrieve_grade = async (num) => {
             if (item.type === 1) {
                 grade_data.quiz.push(item);
             } else if (item.type === 2) {
-                grade_data.assignment.push(item);
+                grade_data.examination.push(item);
             } else if (item.type === 3) {
                 grade_data.activity.push(item);
             }
@@ -181,7 +181,7 @@ const getTypeName = (value) => {
         case 1:
             return 'quiz'
         case 2:
-            return 'assignment'
+            return 'examination'
         case 3:
             return 'activity'
         default:
