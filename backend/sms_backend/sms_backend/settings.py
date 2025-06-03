@@ -18,7 +18,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 ENVIRONMENT = "LOCAL"
 
-if ENVIRONMENT == "PRODUCTION":
+if ENVIRONMENT == "PROD":
     load_dotenv()
 
 # Quick-start development settings - unsuitable for production
@@ -148,7 +148,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOW_ALL_ORIGINS = True
 
 CSRF_TRUSTED_ORIGINS = [
-    'http://localhost:5173',  # Your Vue.js dev server
+    'http://localhost:5173',
+    'https://frontend-student-management-system.onrender.com'
 ]
 
 

@@ -23,11 +23,11 @@ export default defineConfig({
   server: {
     proxy: {
       '/dj-rest-auth': {
-        target: 'http://127.0.0.1:8000', 
+        target: 'https://student-management-system-rmww.onrender.com', 
         changeOrigin: true,
       },
       '/api': {
-        target: 'http://127.0.0.1:8000', 
+        target: 'https://student-management-system-rmww.onrender.com/', 
         changeOrigin: true,
       },
     }
