@@ -78,7 +78,7 @@ onMounted(() => {
         </Input>
 
         <br>
-        <Table>
+        <Table class="">
           <TableCaption>
             <div v-if="loading" class="flex justify-center">
               <Spinner class="border-primary">Loading Data...</Spinner>
@@ -89,16 +89,16 @@ onMounted(() => {
           <TableHeader>
             <TableRow>
               <TableHead>Name</TableHead>
-              <TableHead>Email</TableHead>
-              <TableHead class="hidden sm:table-cell">ID</TableHead>
+              <TableHead>ID</TableHead>
+              <TableHead class="hidden sm:table-cell">Gender</TableHead>
               <TableHead :class="'text-right'">Actions</TableHead>
             </TableRow>
           </TableHeader>
 
           <TableBody v-for="student in filteredData" :key="student.id">
             <TableCell :class="'font-medium'">{{ student.name }}</TableCell>
-            <TableCell>{{ student.email }}</TableCell>
-            <TableCell class="hidden sm:table-cell">{{ student.student_number }}</TableCell>
+            <TableCell class="text-ellipsis">{{ student.student_number }}</TableCell>
+            <TableCell class="hidden sm:table-cell">{{ student.gender }}</TableCell>
             <TableCell :class="'text-right'">
               <RouterLink :to="{ name: 'studentdetail', params: { id: student.id ?? 1 } }">
                 <Button>View</Button>

@@ -19,7 +19,9 @@ import { useRoute, RouterLink } from 'vue-router'
             </AlertDialogHeader>
             <AlertDialogFooter>
                 <AlertDialogCancel class="text-primary">Cancel</AlertDialogCancel>
-                <RouterLink :to="{name: 'logout'}"><AlertDialogAction>Continue</AlertDialogAction></RouterLink>
+                <RouterLink :to="{name: 'logout'}" >
+                    <AlertDialogAction class="w-full">Continue</AlertDialogAction>
+                </RouterLink>
             </AlertDialogFooter>
         </AlertDialogContent>
     </AlertDialog>

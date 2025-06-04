@@ -215,24 +215,26 @@ onMounted(() => {
                         <CardTitle size="lg">
                             {{ subjects.subject.name }}
                             <CardSubtitle>{{ subjects.subject.subject_code }}</CardSubtitle>
-                        </CardTitle>
-                        <CardIcon>
-                            <Badge :value="matchEnrollmentToAverage(subjects.id)">
+                            <Badge class="block md:hidden" :value="matchEnrollmentToAverage(subjects.id)">
                                 {{ matchEnrollmentToAverage(subjects.id) }} %</Badge>
-                            <RouterLink
-                                :to="{ name: 'Studentsubjectdetail', params: { stud_id: $route.params.id, subj_id: subjects.subject.id, enroll_id: subjects.id } }">
-
-                                <Button :variant="'outline'" :class="'mr-2'" size="sm">
-                                    <SquarePen :size="16"></SquarePen>
-                                </Button>
-                            </RouterLink>
-
-                            <!-- Dialog -->
-                            <AlertDecline @confirm-delete="handleDelete(subjects.id)">
-                                <Button :variant="'destructive'" size="sm">
-                                    <Trash :size="16"></Trash>
-                                </Button>
-                            </AlertDecline>
+                        </CardTitle>
+                        <CardIcon >
+                            <Badge class="hidden md:inline-flex" :value="matchEnrollmentToAverage(subjects.id)">
+                                {{ matchEnrollmentToAverage(subjects.id) }} %</Badge>
+                                <RouterLink
+                                    :to="{ name: 'Studentsubjectdetail', params: { stud_id: $route.params.id, subj_id: subjects.subject.id, enroll_id: subjects.id } }">
+    
+                                    <Button :variant="'outline'" :class="'mr-2'" size="sm">
+                                        <SquarePen :size="16"></SquarePen>
+                                    </Button>
+                                </RouterLink>
+    
+                                <!-- Dialog -->
+                                <AlertDecline @confirm-delete="handleDelete(subjects.id)">
+                                    <Button :variant="'destructive'" size="sm">
+                                        <Trash :size="16"></Trash>
+                                    </Button>
+                                </AlertDecline>
                         </CardIcon>
                     </CardHeader>
                 </Card>
