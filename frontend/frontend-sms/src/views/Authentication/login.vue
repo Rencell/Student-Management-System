@@ -38,7 +38,8 @@ const actions = reactive(auth.actionStates)
     
     <div class="w-dvw min-h-screen bg-secondary flex justify-center items-center">
         <Card class="shadow-2xl md:w-md w-fit">
-            <CardHeader class="flex flex-col text-center">
+            <CardHeader class="flex flex-col items-center">
+                <img class="w-25" src="/icon-192x192.png" alt="">
                 <p class="text-2xl font-bold">Welcome back</p>
                 <p class="text-sm text-muted-foreground mb-4">Enter your credentials to access your account</p>
             </CardHeader>

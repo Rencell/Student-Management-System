@@ -6,8 +6,9 @@
     </Button>
 
     <div class="container flex h-16 items-center px-4">
+      <img class="h-full p-2" src="/icon-192x192.png" alt="">
       <RouterLink to="/" class="font-bold text-lg flex gap-3 items-center text-card-foreground">
-        <GraduationCap /> Student Management
+         Student Management
       </RouterLink>
       <div class="ml-auto flex items-center space-x-4">
         <Moon class="text-black hover:text-black/80 cursor-pointer transition-colors" v-if="!moon_sun"
