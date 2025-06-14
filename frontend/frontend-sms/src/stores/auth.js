@@ -1,11 +1,7 @@
 import { defineStore } from 'pinia'
 import authentication from '@/services/auth/auth'
 import { computed, reactive, ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router';
 export const useAuthStore = defineStore('auth', () => {
-
-  const route = useRoute();
-  const router = useRouter();
 
   const TOKEN_STORAGE = 'AUTH_TOKEN'
   const actionStates = reactive({
@@ -18,18 +14,17 @@ export const useAuthStore = defineStore('auth', () => {
 
   const isAuthenticated = computed(() => !!localStorage.getItem(TOKEN_STORAGE));
 
-  const login = async (form) => {
+  const login = async (form, route,router) => {
     mutations.LOGIN_BEGIN()
     try {
       const response = await authentication.login(form.username, form.password)
       actionStates.loginresponse = response.data
       mutations.SET_TOKEN(response.data['key'])
-      mutations.LOGIN_SUCCESS()
+      mutations.LOGIN_SUCCESS(route,router)
     } catch (e) {
       console.error(e)
       
       const data = e.response.data;
-      console.log(data)
       Object.keys(data).forEach(key => {
         errors.value[key] = data[key][0]; 
       });
@@ -53,7 +48,7 @@ export const useAuthStore = defineStore('auth', () => {
       actionStates.authenticating = true
       actionStates.error = false
     },
-    LOGIN_SUCCESS: () => {
+    LOGIN_SUCCESS: (route,router) => {
       actionStates.authenticating = false
       actionStates.error = false
       const redirectPath = route.query.redirect || '/';

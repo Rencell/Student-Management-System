@@ -7,7 +7,12 @@ import Button from '@/components/ui/button/Button.vue';
 import { computed, reactive, ref } from 'vue';
 import { useAuthStore } from '@/stores/auth';
 import { Spinner } from '@/components/ui/spinner';
+import { useRoute, useRouter } from 'vue-router';
+
+
 const showPassword = ref(false)
+const route = useRoute();
+const router = useRouter();
 
 const auth = useAuthStore();
 
@@ -20,7 +25,7 @@ const form = reactive({
 
 const submit = () => {
     // auth.errors = {}; 
-    auth.login(form)
+    auth.login(form, route, router)
     if(auth.actionStates){
         form.username = null
         form.password = null
