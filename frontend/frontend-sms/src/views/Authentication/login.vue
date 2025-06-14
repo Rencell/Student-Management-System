@@ -24,7 +24,6 @@ const form = reactive({
 
 
 const submit = () => {
-    // auth.errors = {}; 
     auth.login(form, route, router)
     if(auth.actionStates){
         form.username = null

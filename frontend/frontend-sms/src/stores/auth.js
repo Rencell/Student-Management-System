@@ -12,7 +12,8 @@ export const useAuthStore = defineStore('auth', () => {
 
   const errors = ref({})
 
-  const isAuthenticated = computed(() => !!localStorage.getItem(TOKEN_STORAGE));
+  const token = ref(localStorage.getItem(TOKEN_STORAGE));
+  const isAuthenticated = ref(!!token.value);
 
   const login = async (form, route,router) => {
     mutations.LOGIN_BEGIN()
@@ -20,7 +21,11 @@ export const useAuthStore = defineStore('auth', () => {
       const response = await authentication.login(form.username, form.password)
       actionStates.loginresponse = response.data
       mutations.SET_TOKEN(response.data['key'])
-      mutations.LOGIN_SUCCESS(route,router)
+
+      const redirectPath = route.query.redirect || '/';
+      await router.push(redirectPath);
+
+      mutations.LOGIN_SUCCESS()
     } catch (e) {
       console.error(e)
       
@@ -48,11 +53,9 @@ export const useAuthStore = defineStore('auth', () => {
       actionStates.authenticating = true
       actionStates.error = false
     },
-    LOGIN_SUCCESS: (route,router) => {
+    LOGIN_SUCCESS: () => {
       actionStates.authenticating = false
       actionStates.error = false
-      const redirectPath = route.query.redirect || '/';
-      router.push(redirectPath);
     },
     LOGIN_FAILED: () => {
       actionStates.authenticating = false
@@ -67,11 +70,13 @@ export const useAuthStore = defineStore('auth', () => {
       localStorage.setItem(TOKEN_STORAGE, token)
       authentication.setToken(token)
       actionStates.token = token
+      isAuthenticated.value = true;
     },
     REMOVE_TOKEN: () => {
       localStorage.removeItem(TOKEN_STORAGE)
       authentication.removeToken()
       actionStates.token = null
+      isAuthenticated.value = false;
     },
   }
 
