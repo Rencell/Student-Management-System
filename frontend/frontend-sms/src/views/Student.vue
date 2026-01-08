@@ -1,23 +1,64 @@
 <script setup>
 import Scaffold from '@/components/layout/scaffold.vue';
 import { Card, CardContent, CardIcon, CardFooter, CardHeader, CardTitle, CardSubtitle } from '@/components/ui/card';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import Label from '@/components/ui/label/Label.vue';
-import Button from '@/components/ui/button/Button.vue';
-import Input from '@/components/ui/input/input.vue';
+
 import { CirclePlus, Search } from 'lucide-vue-next';
 import { Table, TableBody, TableCell, TableCaption, TableFooter, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { ref } from 'vue';
+import { computed, onMounted, reactive, ref } from 'vue';
 import { useRoute, RouterLink } from 'vue-router'
+import studentService from '@/services/student/student';
+import addStudentModal from '@/components/Modal/StudentModal/addStudentModal.vue';
+import Button from '@/components/ui/button/Button.vue';
+import { Input } from '@/components/ui/input';
+import { Spinner } from '@/components/ui/spinner';
 
-const showAddSubjectDialog = ref(false)
+const loading = ref(false)
+const showAddStudentDialog = ref(false)
+
+const datahere = ref([]);
+
+const fyck = async () => {
+  loading.value = true
+  try {
+    const response = await studentService.list_students();
+    datahere.value = response.data;
+  } catch (e) {
+    console.error(e)
+  } finally {
+    loading.value = false
+  }
+}
+
+const searchQuery = ref('')
+
+
+const filteredData = computed(() => {
+
+  const lowerCase = searchQuery.value.toLowerCase()
+  return datahere.value.filter(student =>
+    student.name.toLowerCase().includes(lowerCase) ||
+    student.student_number.toLowerCase().includes(lowerCase)
+  )
+})
+
+const createStudent = (value) => {
+  datahere.value.push(value)
+}
+
+
+onMounted(() => {
+  fyck();
+})
 </script>
 
 <template>
+
+  <addStudentModal v-model:open="showAddStudentDialog" @create-student="createStudent"></addStudentModal>
+
   <Scaffold>
     <div class="flex justify-between">
       <p class="text-2xl font-bold pb-5 text-card-foreground">Students</p>
-      <Button @click="showAddSubjectDialog = true">
+      <Button @click="showAddStudentDialog = true">
         <CirclePlus :size="16"></CirclePlus>&nbsp;Add Student
       </Button>
     </div>
@@ -32,62 +73,62 @@ const showAddSubjectDialog = ref(false)
       </CardHeader>
       <CardContent>
 
-        <div class="flex gap-2 items-center">
-          <Search class="text-primary" :size="16"></Search>
-          <Input :placeholder="'Search Students...'"></Input>
-        </div>
+        <Input v-model="searchQuery" placeholder="Search Students..." :icon="true">
+        <Search></Search>
+        </Input>
 
         <br>
-        <Table>
-          <TableCaption>A list of your recent invoices.</TableCaption>
+        <Table class="">
+          <TableCaption>
+            <div v-if="loading" class="flex justify-center">
+              <Spinner class="border-primary">Loading Data...</Spinner>
+
+            </div>
+            <p v-else>A list of your recent Students.</p>
+          </TableCaption>
           <TableHeader>
             <TableRow>
               <TableHead>Name</TableHead>
-              <TableHead>Email</TableHead>
               <TableHead>ID</TableHead>
-              <TableHead :class="'text-right w-[100px]'">Subjects</TableHead>
+              <TableHead class="hidden sm:table-cell">Gender</TableHead>
               <TableHead :class="'text-right'">Actions</TableHead>
             </TableRow>
           </TableHeader>
-          <TableBody>
-              <TableCell :class="'font-medium'">INV001</TableCell>
-              <TableCell>Paid</TableCell>
-              <TableCell>Credit Card</TableCell>
-              <TableCell :class="'text-right'">$250.00</TableCell>
-              <TableCell :class="'text-right'"><RouterLink :to="{ name: 'studentdetail' }"><Button>View</Button></RouterLink></TableCell>
-            
+
+          <TableBody v-for="student in filteredData" :key="student.id">
+            <TableCell :class="'font-medium'">{{ student.name }}</TableCell>
+            <TableCell class="text-ellipsis">{{ student.student_number }}</TableCell>
+            <TableCell class="hidden sm:table-cell">{{ student.gender }}</TableCell>
+            <TableCell :class="'text-right'">
+              <RouterLink :to="{ name: 'studentdetail', params: { id: student.id ?? 1 } }">
+                <Button>View</Button>
+              </RouterLink>
+            </TableCell>
+
           </TableBody>
         </Table>
+
       </CardContent>
+
     </Card>
   </Scaffold>
 
 
   <!-- Dialog Modal -->
 
-  <Dialog :open="showAddSubjectDialog" @update:open="showAddSubjectDialog = false">
-    <DialogContent>
-      <DialogHeader>
-        <DialogTitle>Add Student</DialogTitle>
-        <DialogDescription>
-          Add a new student to this list.
-        </DialogDescription>
-      </DialogHeader>
-        <div class="grid gap-4 py-4">
-          <div>
-            <Label for="subjectName">Subject Name</Label>
-            <Input id="subjectName" required />
-          </div>
-          <div>
-            <Label for="subjectCode">Subject Code</Label>
-            <Input id="subjectCode" required />
-          </div>
-        </div>
-        <DialogFooter>
-          <Button type="submit">Add Subject</Button>
-        </DialogFooter>
-    </DialogContent>
-  </Dialog>
+
 </template>
 
-<style scoped></style>
+<style>
+.dark {
+
+  .dp__theme_light {
+    --dp-primary-color: #5271FF;
+    --dp-primary-text-color: #ffffff;
+    --dp-hover-color: #84C7EE;
+    --dp-border-color: hsl(209, 33%, 16%);
+    --dp-text-color: white;
+    --dp-background-color: #131B25;
+  }
+}
+</style>

@@ -5,6 +5,12 @@ class Student(models.Model):
     name = models.CharField(max_length=100)
     student_number = models.CharField(max_length=20, unique=True)
     email = models.EmailField(unique=True)
+    GENDER_CHOICES = [
+        ('male', 'Male'),
+        ('female', 'Female'),
+        ('other', 'Other'),
+    ]
+    gender = models.CharField(max_length=10, choices=GENDER_CHOICES, default='male')
     date_of_birth = models.DateField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
